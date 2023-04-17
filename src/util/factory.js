@@ -38,10 +38,9 @@ const plotRadar = function (title, blips, currentRadarName, alternativeRadars) {
 
   var rings = _.map(_.uniqBy(blips, 'ring'), 'ring')
   var ringMap = {}
-  var maxRings = 4
 
   _.each(rings, function (ringName, i) {
-    if (i === maxRings) {
+    if (i > graphConfig.rings.length) {
       throw new MalformedDataError(ExceptionMessages.TOO_MANY_RINGS)
     }
     ringMap[ringName] = new Ring(ringName, i)

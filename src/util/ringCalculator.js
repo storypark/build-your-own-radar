@@ -1,5 +1,9 @@
+const { generateRatio } = require('./mathUtils')
+const { graphConfig } = require('../graphing/config')
+
 const RingCalculator = function (numberOfRings, maxRadius) {
   var sequence = [0, 6, 5, 3, 2, 1, 1, 1]
+  const ratios = generateRatio(graphConfig.rings.length)
 
   var self = {}
 
@@ -17,7 +21,6 @@ const RingCalculator = function (numberOfRings, maxRadius) {
   }
 
   self.getRingRadius = function (ringIndex) {
-    const ratios = [0, 0.316, 0.652, 0.832, 1]
     const radius = ratios[ringIndex] * maxRadius
     return radius || 0
   }
