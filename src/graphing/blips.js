@@ -107,7 +107,7 @@ function findBlipCoordinates(blip, minRadius, maxRadius, startAngle, allBlipCoor
 function blipAssistiveText(blip) {
   return blip.isGroup()
     ? `\`${blip.ring().name()} ring, group of ${blip.blipText()}`
-    : `${blip.ring().name()} ring, ${blip.name()}, ${blip.isNew() ? 'New' : 'No change'} Blips.`
+    : `${blip.ring().name()} ring, ${blip.name()}, ${blip.isNew() ? 'new' : 'existing'} blip.`
 }
 function addOuterCircle(parentSvg, order, scale = 1) {
   parentSvg
@@ -139,7 +139,7 @@ function newBlip(blip, xValue, yValue, order, group) {
   addOuterCircle(group, order, blip.scale)
 }
 
-function noChangeBlip(blip, xValue, yValue, order, group) {
+function existingBlip(blip, xValue, yValue, order, group) {
   drawBlipCircle(group, blip, xValue, yValue, order)
 }
 
@@ -177,7 +177,7 @@ function drawBlipInCoordinates(blip, coordinates, order, quadrantGroup) {
   } else if (blip.isNew()) {
     newBlip(blip, x, y, order, group)
   } else {
-    noChangeBlip(blip, x, y, order, group)
+    existingBlip(blip, x, y, order, group)
   }
 
   group
@@ -204,8 +204,8 @@ function getGroupBlipTooltipText(ringBlips) {
   return tooltipText
 }
 
-const findNoChangeBlipCoords = function (ringIndex, deg) {
-  const blipWidth = graphConfig.noChangeGroupBlipWidth
+const findexistingBlipCoords = function (ringIndex, deg) {
+  const blipWidth = graphConfig.existingGroupBlipWidth
   const ringWidth = getRingRadius(ringIndex) - getRingRadius(ringIndex - 1)
   const halfRingRadius = getRingRadius(ringIndex) - ringWidth / 2
   const x = graphConfig.quadrantWidth - halfRingRadius * Math.cos(toRadian(deg)) - blipWidth / 2
@@ -213,19 +213,19 @@ const findNoChangeBlipCoords = function (ringIndex, deg) {
   return [x, y]
 }
 
-function findNewBlipCoords(noChangeCoords) {
+function findNewBlipCoords(existingCoords) {
   const groupBlipGap = 5
-  const offsetX = graphConfig.noChangeGroupBlipWidth - graphConfig.newGroupBlipWidth
+  const offsetX = graphConfig.existingGroupBlipWidth - graphConfig.newGroupBlipWidth
   const offsetY = graphConfig.groupBlipHeight + groupBlipGap
-  return [noChangeCoords[0] + offsetX, noChangeCoords[1] - offsetY]
+  return [existingCoords[0] + offsetX, existingCoords[1] - offsetY]
 }
 
 const groupBlipsBaseCoords = function (ringIndex) {
-  const noChangeCoords = findNoChangeBlipCoords(ringIndex + 1, graphConfig.groupBlipAngles[ringIndex])
+  const existingCoords = findexistingBlipCoords(ringIndex + 1, graphConfig.groupBlipAngles[ringIndex])
 
   return {
-    'No change': noChangeCoords,
-    New: findNewBlipCoords(noChangeCoords),
+    existing: existingCoords,
+    new: findNewBlipCoords(existingCoords),
   }
 }
 
@@ -241,7 +241,7 @@ const transposeQuadrantCoords = function (coords, blipWidth) {
 }
 
 function createGroupBlip(blipsInRing, blipType, ring, quadrantOrder) {
-  const blipText = `${blipsInRing.length} ${blipType} Blips`
+  const blipText = `${blipsInRing.length} ${blipType} blips`
   const blipId = `${quadrantOrder}-${replaceSpaceWithHyphens(ring.name())}-group-${replaceSpaceWithHyphens(
     blipType,
   )}-blips`
@@ -254,14 +254,14 @@ function createGroupBlip(blipsInRing, blipType, ring, quadrantOrder) {
 
 function plotGroupBlips(ringBlips, ring, quadrantOrder, parentElement, quadrantWrapper, tooltip) {
   let newBlipsInRing = [],
-    noChangeBlipsInRing = []
+    existingBlipsInRing = []
   ringBlips.forEach((blip) => {
-    blip.isNew() ? newBlipsInRing.push(blip) : noChangeBlipsInRing.push(blip)
+    blip.isNew() ? newBlipsInRing.push(blip) : existingBlipsInRing.push(blip)
   })
 
-  const blipGroups = [newBlipsInRing, noChangeBlipsInRing].filter((group) => !isEmpty(group))
+  const blipGroups = [newBlipsInRing, existingBlipsInRing].filter((group) => !isEmpty(group))
   blipGroups.forEach((blipsInRing) => {
-    const blipType = blipsInRing[0].isNew() ? 'New' : 'No change'
+    const blipType = blipsInRing[0].isNew() ? 'new' : 'existing'
     const groupBlip = createGroupBlip(blipsInRing, blipType, ring, quadrantOrder)
     const groupBlipTooltipText = getGroupBlipTooltipText(blipsInRing)
     const ringIndex = graphConfig.rings.indexOf(ring.name())

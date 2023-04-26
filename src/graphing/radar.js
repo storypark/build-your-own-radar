@@ -22,7 +22,7 @@ const {
   removeScrollListener,
 } = require('./components/quadrants')
 const { renderQuadrantTables } = require('./components/quadrantTables')
-const { addQuadrantNameInPdfView } = require('./pdfPage')
+const { addQuadrantNameInPdfView, addRadarLinkInPdfView } = require('./pdfPage')
 
 const { constructSheetUrl } = require('../util/urlUtils')
 const { toRadian } = require('../util/mathUtils')
@@ -41,14 +41,6 @@ const Radar = function (size, radar) {
     })
 
   tip.direction(function () {
-    if (d3.select('.quadrant-table.selected').node()) {
-      var selectedQuadrant = d3.select('.quadrant-table.selected')
-      if (selectedQuadrant.classed('first') || selectedQuadrant.classed('fourth')) {
-        return 'ne'
-      } else {
-        return 'nw'
-      }
-    }
     return 'n'
   })
 
@@ -836,6 +828,7 @@ const Radar = function (size, radar) {
     if (featureToggles.UIRefresh2022) {
       renderRadarLegends(radarElement)
       hideTooltipOnScroll(tip)
+      addRadarLinkInPdfView()
     }
   }
 

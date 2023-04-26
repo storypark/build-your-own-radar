@@ -25,10 +25,12 @@
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
+      display: -webkit-inline-box;
       line-height: 4.25rem;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       min-height: 200px;
+      width: calc(100% - 24mm);
     }
   }
   .pdf-powered-by-text {
@@ -51,6 +53,15 @@
     p {
       margin: 0;
       font-style: italic;
+      max-width: none;
+
+      &.agree-terms {
+        a:after {
+          content: ' <' attr(href) '> ';
+          font-weight: normal;
+          color: black;
+        }
+      }
     }
   }
 
@@ -158,7 +169,6 @@
 
         &__name {
           border-bottom: none;
-          page-break-inside: auto;
           padding: 0 !important;
 
           &-value {
@@ -173,7 +183,6 @@
 
         &__description {
           display: block;
-          page-break-inside: avoid;
         }
       }
 
@@ -186,6 +195,10 @@
           padding-left: 0;
           line-height: 1.5 !important;
         }
+      }
+
+      & > ul.blip-list:last-child {
+        margin-bottom: 0 !important;
       }
     }
   }
@@ -203,8 +216,32 @@
   .hero-banner,
   main > *:not(#pdf-cover-page, #radar),
   #radar > #radar-plot,
-  .radar-legends {
+  .radar-legends,
+  .ui-helper-hidden-accessible,
+  #onetrust-consent-sdk {
     display: none !important;
+  }
+}
+
+@media print and (orientation: landscape) {
+  #pdf-cover-page {
+    .pdf-banner-image {
+      height: 310px;
+      object-fit: cover;
+    }
+
+    .pdf-title {
+      margin: 12mm 24mm 10mm;
+      width: calc(100% - 48mm);
+    }
+  }
+}
+
+@media print and (orientation: portrait) {
+  #pdf-cover-page {
+    .pdf-banner-image {
+      height: 50%;
+    }
   }
 }
 

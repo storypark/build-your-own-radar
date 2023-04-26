@@ -22,7 +22,7 @@ function highlightBlipInGraph(blipIdToFocus) {
 }
 
 function renderBlipDescription(blip, ring, quadrant, tip, groupBlipTooltipText) {
-  let blipTableItem = d3.select(`.quadrant-table.${quadrant.order} ul:nth-of-type(${ring.order() + 1})`)
+  let blipTableItem = d3.select(`.quadrant-table.${quadrant.order} ul[data-ring-order='${ring.order()}']`)
   if (!groupBlipTooltipText) {
     blipTableItem = blipTableItem.append('li').classed('blip-list__item', true)
     const blipItemDiv = blipTableItem
@@ -72,6 +72,7 @@ function renderBlipDescription(blip, ring, quadrant, tip, groupBlipTooltipText) 
   const blipGraphItem = d3.select(`g a#blip-link-${removeAllSpaces(blip.id())}`)
   const mouseOver = function (e) {
     const targetElement = e.target.classList.contains('blip-link') ? e.target : e.target.parentElement
+    const isGroupIdInGraph = !targetElement.classList.contains('blip-link') ? true : false
     const blipWrapper = d3.select(targetElement)
     const blipIdToFocus = blip.groupIdInGraph() ? blipWrapper.attr('data-group-id') : blipWrapper.attr('data-blip-id')
     const selectedBlipOnGraph = d3.select(`g > a.blip-link[data-blip-id='${blipIdToFocus}'`)
@@ -82,8 +83,22 @@ function renderBlipDescription(blip, ring, quadrant, tip, groupBlipTooltipText) 
     const displayToolTip = blip.isGroup() ? !isQuadrantView : !blip.groupIdInGraph()
     const toolTipText = blip.isGroup() ? groupBlipTooltipText : blip.name()
 
-    if (displayToolTip) {
+    if (displayToolTip && !isGroupIdInGraph) {
       tip.show(toolTipText, selectedBlipOnGraph.node())
+
+      const selectedBlipCoords = selectedBlipOnGraph.node().getBoundingClientRect()
+
+      const tipElement = d3.select('div.d3-tip')
+      const tipElementCoords = tipElement.node().getBoundingClientRect()
+
+      tipElement
+        .style(
+          'left',
+          `${parseInt(
+            selectedBlipCoords.left + window.scrollX - tipElementCoords.width / 2 + selectedBlipCoords.width / 2,
+          )}px`,
+        )
+        .style('top', `${parseInt(selectedBlipCoords.top + window.scrollY - tipElementCoords.height)}px`)
     }
   }
 
@@ -101,12 +116,11 @@ function renderBlipDescription(blip, ring, quadrant, tip, groupBlipTooltipText) 
     }
 
     const blipId = d3.select(targetElement).attr('data-blip-id')
-    const ringName = d3.select(targetElement).attr('data-ring-name')
     highlightBlipInGraph(blipId)
 
     d3.selectAll('.blip-list__item-container.expand').classed('expand', false)
 
-    const selectedBlipContainer = d3.select(`.blip-list__item-container[data-blip-id="${blipId}"`)
+    let selectedBlipContainer = d3.select(`.blip-list__item-container[data-blip-id="${blipId}"`)
     selectedBlipContainer.classed('expand', true)
 
     setTimeout(
@@ -116,9 +130,10 @@ function renderBlipDescription(blip, ring, quadrant, tip, groupBlipTooltipText) 
         }
 
         const isGroupBlip = isNaN(parseInt(blipId))
-        const elementToFocus = isGroupBlip
-          ? d3.select(`.quadrant-table.selected h2.quadrant-table__ring-name[data-ring-name="${ringName}"]`)
-          : selectedBlipContainer.select('button.blip-list__item-container__name')
+        if (isGroupBlip) {
+          selectedBlipContainer = d3.select(`.blip-list__item-container[data-group-id="${blipId}"`)
+        }
+        const elementToFocus = selectedBlipContainer.select('button.blip-list__item-container__name')
         elementToFocus.node()?.scrollIntoView({
           behavior: 'smooth',
         })
@@ -167,13 +182,24 @@ function renderQuadrantTables(quadrants, rings) {
         .classed(quadrant.order, true)
     }
 
-    rings.forEach(function (ring) {
+    const ringNames = Array.from(
+      new Set(
+        quadrant.quadrant
+          .blips()
+          .map((blip) => blip.ring())
+          .map((ring) => ring.name()),
+      ),
+    )
+    ringNames.forEach(function (ringName) {
       quadrantContainer
         .append('h2')
         .classed('quadrant-table__ring-name', true)
-        .attr('data-ring-name', ring.name())
-        .text(ring.name())
-      quadrantContainer.append('ul').classed('blip-list', true)
+        .attr('data-ring-name', ringName)
+        .text(ringName)
+      quadrantContainer
+        .append('ul')
+        .classed('blip-list', true)
+        .attr('data-ring-order', rings.filter((ring) => ring.name() === ringName)[0].order())
     })
   })
 }

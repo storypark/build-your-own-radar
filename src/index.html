@@ -38,7 +38,7 @@
         <p>
           Once you've <a href="https://www.thoughtworks.com/radar/byor">created your Radar</a> you can use this service
           to generate an interactive version of your Technology Radar. Not sure how?
-          <a href="https://www.thoughtworks.com/radar/how-to-byor">Read this first.</a>
+          <a href="https://www.thoughtworks.com/radar/byor">Read this first.</a>
         </p>
         <span class="loader-text">
           <span class="loader-text__title">Building your radar...</span>
@@ -55,8 +55,7 @@
       <div class="input-sheet-form home-page">
         <p>
           Enter the URL of your
-          <a href="https://www.thoughtworks.com/radar/how-to-byor" target="_blank">Google Sheet, CSV or JSON</a> file
-          below…
+          <a href="https://www.thoughtworks.com/radar/byor" target="_blank">Google Sheet, CSV or JSON</a> file below…
         </p>
         <form id="byor-form-submit" method="get">
           <input
@@ -72,7 +71,9 @@
       </div>
       <div class="graph-header"></div>
       <div id="radar">
-        <p class="no-blip-text">There are no blips on this quadrant, please check your sheet once.</p>
+        <p class="no-blip-text">
+          There are no blips on this quadrant, please check your Google sheet/CSV/JSON file once.
+        </p>
       </div>
       <div class="all-quadrants-mobile show-all-quadrants-mobile"></div>
       <div class="graph-footer"></div>
@@ -85,10 +86,12 @@
             <img class="pdf-tw-logo" src="/images/tw-logo.png" alt="logo" />
           </a>
           <div class="pdf-footer-title">Build your own Radar</div>
-          <a class="radar-link" href="https://radar.thoughtworks.com">radar.thoughtworks.com</a>
+          <a class="radar-link" id="generated-radar-link" href="https://radar.thoughtworks.com">
+            radar.thoughtworks.com
+          </a>
         </div>
       </div>
-      <p>
+      <p class="agree-terms">
         Powered by <a href="https://www.thoughtworks.com"> Thoughtworks</a>. By using this service you agree to
         <a href="https://www.thoughtworks.com/radar/tos">Thoughtworks' terms of use</a>. You also agree to our
         <a href="https://www.thoughtworks.com/privacy-policy">privacy policy</a>, which describes how we will gather,

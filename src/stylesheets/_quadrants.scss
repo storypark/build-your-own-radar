@@ -31,7 +31,7 @@
       .quadrant-group,
       .quadrant-table,
       .radar-legends {
-        display: none;
+        display: none !important;
       }
     }
 
@@ -156,6 +156,7 @@
       text-decoration: none;
       cursor: pointer;
       pointer-events: initial;
+      outline: none;
     }
 
     .quadrant-group {
