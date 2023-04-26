@@ -13,7 +13,7 @@ const isBetween = (number, startNumber, endNumber) => {
   return startNumber <= number && number <= endNumber
 }
 const isValidConfig = () => {
-  return getQuadrants().length === 4 && isBetween(getRings().length, 1, 4)
+  return getQuadrants().length === 4 && isBetween(getRings().length, 1, 6)
 }
 
 const graphConfig = {

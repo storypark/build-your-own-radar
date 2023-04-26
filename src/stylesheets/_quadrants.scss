@@ -102,29 +102,40 @@
     }
 
     path {
-      &.ring-arc-3 {
+      &.ring-arc-5 {
+        stroke: none;
+        fill: $grey-lightest;
+      }
+      &.ring-arc-4 {
         stroke: none;
         fill: $grey-light;
       }
 
-      &.ring-arc-2 {
+      &.ring-arc-3 {
         stroke: none;
         fill: $grey;
       }
 
-      &.ring-arc-1 {
+      &.ring-arc-2 {
         stroke: none;
         fill: $grey-dark;
       }
 
-      &.ring-arc-0 {
+      &.ring-arc-1 {
         stroke: none;
         fill: $grey-darkest;
+      }
+
+      &.ring-arc-0 {
+        stroke: none;
+        fill: $grey-even-darker;
       }
     }
 
     @if $UIRefresh2022 {
       path {
+        &.ring-arc-5,
+        &.ring-arc-4,
         &.ring-arc-3,
         &.ring-arc-2,
         &.ring-arc-1,
@@ -235,7 +246,7 @@
           font-weight: bold;
           text-transform: none;
           fill: $black;
-          font-size: 16px;
+          font-size: 14px;
         }
       }
     }
