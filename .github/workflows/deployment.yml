@@ -60,8 +60,9 @@ jobs:
           docker build \
             --build-arg SHEET_ID="https://docs.google.com/spreadsheets/d/1s38CG6FvpcDcjEBI2eskb1-0u5Xvo0SGucFVbUXPP_E/edit" \
             --build-arg SHEET_NAME="Implementation" \
-            --build-arg GOOGLE_CLIENT_ID="$CLIENT_ID" \
-            --build-arg GOOGLE_API_KEY="$API_KEY" \
+            --build-arg CLIENT_ID="$CLIENT_ID" \
+            --build-arg API_KEY="$API_KEY" \
+            --build-arg RINGS="[\"Deprecated\",\"Hold\",\"Assess\",\"Trial\",\"Adopt\",\"Require\"]"
             -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"

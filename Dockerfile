@@ -4,6 +4,7 @@ ARG SHEET_ID
 ARG SHEET_NAME
 ARG CLIENT_ID
 ARG API_KEY
+ARG RINGS
 
 WORKDIR /src/build-your-own-radar
 COPY package.json ./
