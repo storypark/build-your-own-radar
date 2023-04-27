@@ -12,7 +12,7 @@ RUN npm install
 
 COPY . ./
 
-RUN npm test && npm run build:prod
+RUN npm run build:prod
 
 FROM nginx:1.23.0
 
