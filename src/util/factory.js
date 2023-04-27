@@ -237,7 +237,7 @@ const CSVDocument = function (url) {
   return self
 }
 
-const JSONFile = function (url) {
+const JSONFile = function (url, title) {
   var self = {}
 
   self.build = function () {
@@ -258,7 +258,7 @@ const JSONFile = function (url) {
       var blips = _.map(data, new InputSanitizer().sanitize)
       featureToggles.UIRefresh2022
         ? plotRadarGraph(FileName(url), blips, 'JSON File', [])
-        : plotRadar(FileName(url), blips, 'JSON File', [])
+        : plotRadar(title || FileName(url), blips, 'JSON File', [])
     } catch (exception) {
       const invalidContentError = new InvalidContentError(ExceptionMessages.INVALID_JSON_CONTENT)
       plotErrorMessage(featureToggles.UIRefresh2022 ? invalidContentError : exception, 'json')
@@ -271,12 +271,6 @@ const JSONFile = function (url) {
   }
 
   return self
-}
-
-const DomainName = function (url) {
-  var search = /.+:\/\/([^\\/]+)/
-  var match = search.exec(decodeURIComponent(url.replace(/\+/g, ' ')))
-  return match == null ? null : match[1]
 }
 
 const FileName = function (url) {
@@ -292,7 +286,7 @@ const Factory = function () {
   var self = {}
   var sheet
 
-  self.build = function () {
+  self.build = function (sheetId, sheetName) {
     if (!isValidConfig()) {
       plotError(new InvalidConfigError(ExceptionMessages.INVALID_CONFIG))
       return
@@ -313,21 +307,14 @@ const Factory = function () {
       }
     })
 
-    const domainName = DomainName(window.location.search.substring(1))
-    const queryString = featureToggles.UIRefresh2022
-      ? window.location.href.match(/documentId(.*)/)
-      : window.location.href.match(/sheetId(.*)/)
-    const queryParams = queryString ? QueryParams(queryString[0]) : {}
-
-    const paramId = featureToggles.UIRefresh2022 ? queryParams.documentId : queryParams.sheetId
-    if (paramId && paramId.endsWith('.csv')) {
-      sheet = CSVDocument(paramId)
+    if (sheetId && sheetId.endsWith('.csv')) {
+      sheet = CSVDocument(sheetId)
       sheet.init().build()
-    } else if (paramId && paramId.endsWith('.json')) {
-      sheet = JSONFile(paramId)
+    } else if (sheetId && sheetId.endsWith('.json')) {
+      sheet = JSONFile(sheetId, sheetName)
       sheet.init().build()
-    } else if (domainName && domainName.endsWith('google.com') && paramId) {
-      sheet = GoogleSheet(paramId, queryParams.sheetName)
+    } else if (sheetId) {
+      sheet = GoogleSheet(sheetId, sheetName)
       sheet.init().build()
     } else {
       if (!featureToggles.UIRefresh2022) {

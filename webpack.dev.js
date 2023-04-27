@@ -9,7 +9,6 @@ const config = require('./src/config')
 const { graphConfig, uiConfig } = require('./src/graphing/config')
 
 const featureToggles = config().development.featureToggles
-const main = ['./src/site.js']
 const scssVariables = []
 
 Object.entries(graphConfig).forEach(function ([key, value]) {
@@ -26,7 +25,6 @@ Object.entries(featureToggles).forEach(function ([key, value]) {
 
 module.exports = merge(common, {
   mode: 'development',
-  entry: { main: main },
   performance: {
     hints: false,
   },

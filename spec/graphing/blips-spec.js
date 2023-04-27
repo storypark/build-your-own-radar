@@ -31,6 +31,7 @@ jest.mock('../../src/graphing/config', () => {
       newGroupBlipWidth: 84,
       existingGroupBlipWidth: 124,
       groupBlipAngles: [30, 35, 60, 80],
+      rings: ['Adopt', 'Trial', 'Assess', 'Hold'],
     },
   }
 })
@@ -120,8 +121,8 @@ describe('Blips', function () {
   it('should return first quadrant group blip coordinates for ring1', function () {
     const baseCoords = groupBlipsBaseCoords(0)
 
-    expect(baseCoords.new).toEqual([419.94200893545406, 442.552])
-    expect(baseCoords['existing']).toEqual([379.94200893545406, 471.552])
+    expect(baseCoords.new).toEqual([434.57437415779594, 451])
+    expect(baseCoords['existing']).toEqual([394.57437415779594, 480])
   })
 
   it('should transpose base coords for a new blip in ring1 to other three quadrants', function () {
@@ -129,27 +130,27 @@ describe('Blips', function () {
 
     const coordsMap = transposeQuadrantCoords(newBlipBaseCoords, graphConfig.newGroupBlipWidth)
     expect(coordsMap.first).toEqual(newBlipBaseCoords)
-    expect(coordsMap.second).toEqual([newBlipBaseCoords[0], 589.448])
-    expect(coordsMap.third).toEqual([552.057991064546, newBlipBaseCoords[1]])
-    expect(coordsMap.fourth).toEqual([552.057991064546, 589.448])
+    expect(coordsMap.second).toEqual([newBlipBaseCoords[0], 581])
+    expect(coordsMap.third).toEqual([537.425625842204, newBlipBaseCoords[1]])
+    expect(coordsMap.fourth).toEqual([537.425625842204, 581])
   })
 
   it('should return first quadrant group blip coordinates for ring2 with index 1', function () {
     const baseCoords = groupBlipsBaseCoords(1)
-    expect(baseCoords.new).toEqual([287.0075702088335, 340.86317046071997])
-    expect(baseCoords['existing']).toEqual([247.0075702088335, 369.86317046071997])
+    expect(baseCoords.new).toEqual([332.7228074965136, 372.87332422059916])
+    expect(baseCoords['existing']).toEqual([292.7228074965136, 401.87332422059916])
   })
 
   it('should return first quadrant group blip coordinates for ring3 with index 2', function () {
     const baseCoords = groupBlipsBaseCoords(2)
-    expect(baseCoords.new).toEqual([300.048, 153.99348500067663])
-    expect(baseCoords['existing']).toEqual([260.048, 182.99348500067663])
+    expect(baseCoords.new).toEqual([330, 205.87187078897966])
+    expect(baseCoords['existing']).toEqual([290, 234.87187078897966])
   })
 
   it('should return first quadrant group blip coordinates for ring4 with index 3', function () {
     const baseCoords = groupBlipsBaseCoords(3)
-    expect(baseCoords.new).toEqual([408.91602532749283, 23.149928577467563])
-    expect(baseCoords['existing']).toEqual([368.91602532749283, 52.14992857746756])
+    expect(baseCoords.new).toEqual([412.2056164052152, 41.806126650530814])
+    expect(baseCoords['existing']).toEqual([372.2056164052152, 70.80612665053081])
   })
 
   it('should return group blip tool tip text as "Click to view all" count is more than 15', function () {
@@ -169,10 +170,10 @@ describe('Blips', function () {
 
   it('should return ring radius based on the ring index', function () {
     expect(getRingRadius(0)).toBe(0)
-    expect(getRingRadius(1)).toBe(161.792)
-    expect(getRingRadius(2)).toBe(333.824)
-    expect(getRingRadius(3)).toBe(425.984)
-    expect(getRingRadius(4)).toBe(507.904)
+    expect(getRingRadius(1)).toBe(128)
+    expect(getRingRadius(2)).toBe(256)
+    expect(getRingRadius(3)).toBe(384)
+    expect(getRingRadius(4)).toBe(512)
     expect(getRingRadius(5)).toBe(0)
   })
 

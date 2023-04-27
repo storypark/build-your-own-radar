@@ -17,7 +17,7 @@ describe('ringCalculator', function () {
   })
 
   it('calculates the ring radius', function () {
-    expect(ringCalculator.getRingRadius(1)).toEqual(158)
+    expect(ringCalculator.getRingRadius(1)).toEqual(125)
   })
 
   it('calculates the ring radius for invalid ring as 0', function () {

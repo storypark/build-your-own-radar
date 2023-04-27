@@ -15,6 +15,7 @@ if (env) {
 }
 
 const common = ['./src/common.js']
+const main = ['./src/site.js']
 
 const ASSET_PATH = process.env.ASSET_PATH || '/'
 
@@ -30,6 +31,8 @@ const plugins = [
     'process.env.API_KEY': JSON.stringify(process.env.API_KEY),
     'process.env.ENABLE_GOOGLE_AUTH': JSON.stringify(process.env.ENABLE_GOOGLE_AUTH),
     'process.env.GTM_ID': JSON.stringify(process.env.GTM_ID),
+    'process.env.SHEET_ID': JSON.stringify(process.env.SHEET_ID),
+    'process.env.SHEET_NAME': JSON.stringify(process.env.SHEET_NAME),
     'process.env.RINGS': JSON.stringify(process.env.RINGS),
     'process.env.QUADRANTS': JSON.stringify(process.env.QUADRANTS),
     'process.env.ADOBE_LAUNCH_SCRIPT_URL': JSON.stringify(process.env.ADOBE_LAUNCH_SCRIPT_URL),
@@ -39,7 +42,8 @@ const plugins = [
 module.exports = {
   context: __dirname,
   entry: {
-    common: common,
+    common,
+    main,
   },
   output: {
     path: buildPath,
