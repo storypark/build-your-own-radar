@@ -2,6 +2,8 @@ FROM node:18 AS build
 
 ARG SHEET_ID
 ARG SHEET_NAME
+ARG CLIENT_ID
+ARG API_KEY
 
 WORKDIR /src/build-your-own-radar
 COPY package.json ./
