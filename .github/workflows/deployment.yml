@@ -26,6 +26,9 @@ jobs:
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@40d50e0dc77106aff0f739aa414ac8ae05be1189 # v1-node16
+        env:
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          OIDC_ROLE_NAME: ${{ secrets.OIDC_ROLE_NAME }}
         with:
           role-to-assume: 'arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/${{ env.OIDC_ROLE_NAME }}'
           role-session-name: 'oidc_${{ github.action }}'
